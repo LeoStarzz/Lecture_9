@@ -14,6 +14,7 @@ class managerController {
     const manager = new Manager(name, surname, experience);
 
     managers.push(manager);
+    return manager.id;
   }
 
   updateOne(id, data) {

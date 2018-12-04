@@ -28,7 +28,8 @@ class projectRouter {
     this.__router.post('/', (req, res) => {
       const { name, mode } = req.query;
 
-      projectController.create(name, mode);
+      const id = projectController.create(name, mode);
+      res.json(id);
       res.status(201).end();
     });
 

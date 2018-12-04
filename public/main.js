@@ -24,10 +24,8 @@
     } else {
       isOn = true;
       const companyName = DOM.companyNameInput.value;
-      const id = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then().then(data => data);
-      console.log(id);
-      const company = await fetch(`http://localhost:8080/companies/0`, { method: "GET" }).then(res => res.json()).then(data => data);
-      console.log(company);
+      const id = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then(res => res.json()).then(data => data);
+      const company = await fetch(`http://localhost:8080/companies/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
       DOM.userCompanyName.innerHTML = company.name;
       DOM.userSettings.className = "hide";
       intervalID = window.setInterval(mainFunc, tick);
@@ -67,7 +65,7 @@
                 totalLines = totalLines + developer.lines;
               }
 
-              totalLines = totalLines * project.manager.getQuotient();
+              totalLines = totalLines * project.manager.quotient;
             }
             // Обновляем оставшееся количество строк у проекта
             if (project.remainsLinesOfCode - totalLines < 0) {
@@ -130,8 +128,8 @@
       if (utils.isProjectExists(projectName, projects, freeProjects)) {
         error('Project with this name already exists!');
       } else {
-        await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" });
-        const project = await fetch(`http://localhost:8080/projects/0`, { method: "GET" }).then(res => res.json()).then(data => data);
+        const id = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" }).then(res => res.json()).then(data => data);
+        const project = await fetch(`http://localhost:8080/projects/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
         console.log(project);
         DOM.createNewProject(project.name, project.cost, project.linesOfCode, project.remainsLinesOfCode);
         freeProjects.push(project);
@@ -190,9 +188,9 @@
         const managerExperience = DOM.managerExperienceInput.value;
         const fireButton = document.createElement('div');
         const div = document.createElement('div');
-        await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
-          { method: "POST" });
-
+        const id = await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
+          { method: "POST" }).then(res => res.json()).then(data => data);
+        const manager = await fetch(`http://localhost:8080/managers/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
         if (freeProjects.length === 0) {
           // Если нет свободных проектов
           manager.state = 'Free';
@@ -226,7 +224,7 @@
         }
         freeProjects.shift();
 
-        DOM.createNewManager(manager.name, manager.surname, manager.experience, manager.getQuotient(), manager.state, fireButton, div);
+        DOM.createNewManager(manager.name, manager.surname, manager.experience, manager.quotient, manager.state, fireButton, div);
 
         // Увольнение менеджера
         fireButton.addEventListener('click', async () => {
@@ -283,8 +281,9 @@
           error("Developer with this name and surname already exists!");
         } else {
           const developerExperience = DOM.developerExperienceInput.value;
-          await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}`,
-            { method: "POST" });
+          const id = await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}&mode=${mode}`,
+            { method: "POST" }).then(res => res.json()).then(data => data);
+          const developer = await fetch(`http://localhost:8080/developers/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
           let hired = false;
           const fireButton = document.createElement('div');
           const div = document.createElement('div');
@@ -309,7 +308,7 @@
             developer.state = 'Free';
           }
 
-          DOM.createNewDeveloper(developer.name, developer.surname, developer.experience, developer.getLines(mode), developer.state, fireButton, div);
+          DOM.createNewDeveloper(developer.name, developer.surname, developer.experience, developer.lines, developer.state, fireButton, div);
 
           // Увольнение разработчика
           fireButton.addEventListener('click', async () => {
@@ -357,10 +356,10 @@
   function getTotalSalary() {
     totalSalary = 0;
     for (let developer of developers) {
-      totalSalary = totalSalary + developer.getSalary();
+      totalSalary = totalSalary + developer.salary;
     }
     for (let manager of managers) {
-      totalSalary = totalSalary + manager.getSalary();
+      totalSalary = totalSalary + manager.salary;
     }
     return totalSalary;
   }

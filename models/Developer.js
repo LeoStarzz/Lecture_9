@@ -1,14 +1,16 @@
-const utils = require('../public/utils');
+const u = require("../Utils");
+const utils = new u.Utils();
 let id = 0;
 
 class Developer {
-  constructor(name, surname, experience = 1) {
+  constructor(name, surname, experience = 1, mode) {
     this.id = id;
     this.name = name;
     this.surname = surname;
     this.experience = experience;
-    this.lines;
+    this.lines = this.getLines(mode);
     this.state;
+    this.salary = this.getSalary();
     id++;
   }
   getSalary() {

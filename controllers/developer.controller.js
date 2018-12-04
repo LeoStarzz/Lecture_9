@@ -10,10 +10,11 @@ class developerController {
     return developers;
   }
 
-  create(name, surname, experience) {
-    const developer = new Developer(name, surname, experience);
+  create(name, surname, experience, mode) {
+    const developer = new Developer(name, surname, experience, mode);
 
     developers.push(developer);
+    return developer.id;
   }
 
   updateOne(id, data) {

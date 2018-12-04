@@ -26,9 +26,10 @@ class developerRouter {
     });
 
     this.__router.post('/', (req, res) => {
-      const { name, surname, experience } = req.query;
+      const { name, surname, experience, mode } = req.query;
 
-      developerController.create(name, surname, experience);
+      const id = developerController.create(name, surname, experience, mode);
+      res.json(id);
       res.status(201).end();
     });
 

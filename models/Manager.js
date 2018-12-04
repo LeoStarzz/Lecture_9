@@ -6,9 +6,10 @@ class Manager {
     this.name = name;
     this.surname = surname;
     this.experience = experience;
-    this.salary;
+    this.salary = this.getSalary();
     this.state;
     this.developers = [];
+    this.quotient = this.getQuotient();
     id++;
   }
   getSalary() {
