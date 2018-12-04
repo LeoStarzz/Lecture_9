@@ -26,9 +26,9 @@ class projectRouter {
     });
 
     this.__router.post('/', (req, res) => {
-      const { name } = req.query;
+      const { name, mode } = req.query;
 
-      projectController.create(name);
+      projectController.create(name, mode);
       res.status(201).end();
     });
 

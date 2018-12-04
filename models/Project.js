@@ -1,14 +1,15 @@
-const utils = require("../public/utils");
+const u = require("../Utils");
+const utils = new u.Utils();
 let id = 0;
 
 class Project {
-  constructor(name = 'New project') {
+  constructor(name = 'New project', mode) {
     this.id = id;
     this.name = name;
-    this.cost;
-    this.linesOfCode;
+    this.cost = this.getCost(mode);
+    this.linesOfCode = this.getLinesOfCode(mode);
     this.manager;
-    this.remainsLinesOfCode;
+    this.remainsLinesOfCode = this.linesOfCode;
     id++;
   }
   getCost(mode) {

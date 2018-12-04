@@ -9,29 +9,30 @@
   let totalLines = 0;
   let isModeSelected = false;
 
-  let projects = await fetch(`http://localhost:8080/projects/`, { method: "GET", mode: "no-cors" }).then(data => data.blob());
-  console.log(projects);
-  let managers = await fetch(`http://localhost:8080/managers/`, { method: "GET", mode: "no-cors" }).then(data => data.blob());
-  let developers = await fetch(`http://localhost:8080/developers/`, { method: "GET", mode: "no-cors" }).then(data => data.blob());
+  let projects = await fetch(`http://localhost:8080/projects/`, { method: "GET" }).then(res => res.json()).then(data => data);
+  let managers = await fetch(`http://localhost:8080/managers/`, { method: "GET" }).then(res => res.json()).then(data => data);
+  let developers = await fetch(`http://localhost:8080/developers/`, { method: "GET" }).then(res => res.json()).then(data => data);
   let freeDevelopers = [];
   let freeManagers = [];
   let freeProjects = [];
   let DOM = new Dom();
   let utils = new Utils();
 
-  DOM.startButton.addEventListener('click', () => {
+  DOM.startButton.addEventListener('click', async () => {
     if (!isModeSelected) {
       error('Choose mode!');
     } else {
       isOn = true;
       const companyName = DOM.companyNameInput.value;
-      fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST", mode: "no-cors" });
-      const company = fetch(`http://localhost:8080/companies/0`, { method: "GET", mode: "no-cors" }).then(data => data.blob());
+      const id = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then().then(data => data);
+      console.log(id);
+      const company = await fetch(`http://localhost:8080/companies/0`, { method: "GET" }).then(res => res.json()).then(data => data);
+      console.log(company);
       DOM.userCompanyName.innerHTML = company.name;
       DOM.userSettings.className = "hide";
       intervalID = window.setInterval(mainFunc, tick);
 
-      function mainFunc() {
+      async function mainFunc() {
         time = time + 1;
         totalLines = 0;
 
@@ -56,7 +57,7 @@
             // Удаление проекта в projects и DOM
             DOM.userProjects.removeChild(DOM.userProjects.children[projects.indexOf(project)]);
             const projectIndex = projects.indexOf(project);
-            fetch(`http://localhost:8080/projects/${projectIndex}`, { method: "DELETE", mode: "no-cors" });
+            await fetch(`http://localhost:8080/projects/${projectIndex}`, { method: "DELETE" });
 
           } else {
             // Если проект не завершён
@@ -123,15 +124,16 @@
   });
 
   // Добавление нового проекта
-  DOM.addProjectButton.addEventListener('click', () => {
+  DOM.addProjectButton.addEventListener('click', async () => {
     if (isOn) {
       const projectName = DOM.projectNameInput.value;
       if (utils.isProjectExists(projectName, projects, freeProjects)) {
         error('Project with this name already exists!');
       } else {
-        fetch(`http://localhost:8080/projects/?name=${projectName}`, { method: "POST", mode: "no-cors" });
-        console.log(projects);
-        DOM.createNewProject(project.name, project.getCost(mode), project.getLinesOfCode(mode), project.remainsLinesOfCode);
+        await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" });
+        const project = await fetch(`http://localhost:8080/projects/0`, { method: "GET" }).then(res => res.json()).then(data => data);
+        console.log(project);
+        DOM.createNewProject(project.name, project.cost, project.linesOfCode, project.remainsLinesOfCode);
         freeProjects.push(project);
         let manager = null;
 
@@ -178,7 +180,7 @@
   });
 
   // Добавление нового менеджера
-  DOM.addManagerButton.addEventListener('click', () => {
+  DOM.addManagerButton.addEventListener('click', async () => {
     if (isOn) {
       const managerName = DOM.managerNameInput.value;
       const managerSurname = DOM.managerSurnameInput.value;
@@ -188,8 +190,8 @@
         const managerExperience = DOM.managerExperienceInput.value;
         const fireButton = document.createElement('div');
         const div = document.createElement('div');
-        fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
-          { method: "POST", mode: "no-cors" });
+        await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
+          { method: "POST" });
 
         if (freeProjects.length === 0) {
           // Если нет свободных проектов
@@ -227,18 +229,17 @@
         DOM.createNewManager(manager.name, manager.surname, manager.experience, manager.getQuotient(), manager.state, fireButton, div);
 
         // Увольнение менеджера
-        fireButton.addEventListener('click', () => {
+        fireButton.addEventListener('click', async () => {
           const managerIndex = managers.indexOf(manager);
           if (manager.state === 'Free') {
             // Если свободный
-            fetch(`http://localhost:8080/managers/${managerIndex}`, { method: "DELETE", mode: "no-cors" });
+            await fetch(`http://localhost:8080/managers/${managerIndex}`, { method: "DELETE" });
             freeManagers.splice(managers.indexOf(manager), 1);
             DOM.userManagers.removeChild(div);
-            console.log(freeProjects);
           } else
           // Если занятый на проекте
           {
-            fetch(`http://localhost:8080/managers/${managerIndex}`, { method: "DELETE", mode: "no-cors" });
+            await fetch(`http://localhost:8080/managers/${managerIndex}`, { method: "DELETE" });
 
             // Освобождаем разработчиков, работающих на этом проекте
             for (let developer of manager.developers) {
@@ -258,7 +259,6 @@
                       developer.children[0].innerHTML = 'Project: Free';
                     }
                   }
-                  console.log(freeProjects);
                 }
               }
             }
@@ -272,7 +272,7 @@
   });
 
   // Добавление нового разработчика
-  DOM.addDeveloperButton.addEventListener('click', () => {
+  DOM.addDeveloperButton.addEventListener('click', async () => {
     if (isOn) {
       if (developers.length >= managers.length * 5) {
         error("You don't have enough managers!");
@@ -283,8 +283,8 @@
           error("Developer with this name and surname already exists!");
         } else {
           const developerExperience = DOM.developerExperienceInput.value;
-          fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}`,
-            { method: "POST", mode: "no-cors" });
+          await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}`,
+            { method: "POST" });
           let hired = false;
           const fireButton = document.createElement('div');
           const div = document.createElement('div');
@@ -312,13 +312,13 @@
           DOM.createNewDeveloper(developer.name, developer.surname, developer.experience, developer.getLines(mode), developer.state, fireButton, div);
 
           // Увольнение разработчика
-          fireButton.addEventListener('click', () => {
+          fireButton.addEventListener('click', async () => {
             const developerIndex = developers.indexOf(developer);
             if (developer.state === 'Free') {
               // Если свободный
 
               freeDevelopers.splice(developers.indexOf(developer), 1);
-              fetch(`http://localhost:8080/developers/${developerIndex}`, { method: "DELETE", mode: "no-cors" });
+              await fetch(`http://localhost:8080/developers/${developerIndex}`, { method: "DELETE" });
               DOM.userDevelopers.removeChild(div);
             } else
             // Если занятый на проекте
@@ -329,7 +329,7 @@
                   project.manager.developers.splice(project.manager.developers.indexOf(developer), 1);
                 }
               }
-              fetch(`http://localhost:8080/developers/${developerIndex}`, { method: "DELETE", mode: "no-cors" });
+              await fetch(`http://localhost:8080/developers/${developerIndex}`, { method: "DELETE" });
               DOM.userDevelopers.removeChild(div);
             }
           });

@@ -9,6 +9,11 @@ const { managerRouter } = require('./routes/manager.routes');
 const { developerRouter } = require('./routes/developer.routes');
 
 app.use(bodyParser.json());
+app.use('/*' , function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use('/companies', companyRouter.getRoutes());
 app.use('/projects', projectRouter.getRoutes());

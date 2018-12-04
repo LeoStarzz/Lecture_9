@@ -14,6 +14,7 @@ class companyController {
     const company = new Company(name);
 
     companies.push(company);
+    return company.id;
   }
 
   updateOne(id, data) {

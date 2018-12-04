@@ -10,10 +10,11 @@ class projectController {
     return projects;
   }
 
-  create(name) {
-    const project = new Project(name);
-
+  create(name, mode) {
+    const project = new Project(name, mode);
+    
     projects.push(project);
+    return project.id;
   }
 
   updateOne(id, data) {

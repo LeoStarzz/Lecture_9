@@ -23,7 +23,6 @@ class developerRouter {
 
       developerController.deleteOne(+id);
       res.status(200).end();
-
     });
 
     this.__router.post('/', (req, res) => {
