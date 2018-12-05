@@ -22,6 +22,13 @@ class managerRouter {
       const { id } = req.params;
 
       managerController.deleteOne(+id);
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.status(200).end();
+    });
+
+    this.__router.delete('/', (req, res) => {
+
+      managerController.deleteAll();
       res.status(200).end();
     });
 

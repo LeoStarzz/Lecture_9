@@ -15,6 +15,14 @@ class Utils {
   isDeveloperExists(developerName, developerSurname, developers) {
     return developers.find((item) => item.name === developerName && item.surname === developerSurname);
   }
+
+  getData(data) {
+    return fetch(`http://localhost:8080/${data}/`, { method: "GET" }).then(res => res.json()).then(data => data);
+  }
+
+  deleteData(data) {
+    return fetch(`http://localhost:8080/${data}/`, { method: "DELETE" });
+  }
 }
 
 

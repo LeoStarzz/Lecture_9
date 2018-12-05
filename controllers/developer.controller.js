@@ -1,4 +1,4 @@
-const { developers } = require('../data/developers.data');
+let { developers } = require('../data/developers.data');
 const { Developer } = require('../models/Developer');
 
 class developerController {
@@ -25,6 +25,10 @@ class developerController {
   deleteOne(id) {
     const index = developers.findIndex(c => c.id === id);
     developers.splice(index, 1);
+  }
+
+  deleteAll() {
+    developers = [];
   }
 }
 

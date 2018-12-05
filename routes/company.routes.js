@@ -25,6 +25,11 @@ class companyRouter {
       res.status(200).end();
     });
 
+    this.__router.delete('/', (req, res) => {
+      companyController.deleteAll();
+      res.status(200).end();
+    });
+
     this.__router.post('/', (req, res) => {
       const { name } = req.query;
 

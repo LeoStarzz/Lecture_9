@@ -9,20 +9,23 @@
   let totalLines = 0;
   let isModeSelected = false;
 
-  let projects = await fetch(`http://localhost:8080/projects/`, { method: "GET" }).then(res => res.json()).then(data => data);
-  let managers = await fetch(`http://localhost:8080/managers/`, { method: "GET" }).then(res => res.json()).then(data => data);
-  let developers = await fetch(`http://localhost:8080/developers/`, { method: "GET" }).then(res => res.json()).then(data => data);
+  let DOM = new Dom();
+  let utils = new Utils();
+  let projects = [];
+  let managers = [];
+  let developers = [];
   let freeDevelopers = [];
   let freeManagers = [];
   let freeProjects = [];
-  let DOM = new Dom();
-  let utils = new Utils();
 
   DOM.startButton.addEventListener('click', async () => {
     if (!isModeSelected) {
       error('Choose mode!');
     } else {
       isOn = true;
+      projects = await utils.getData('projects');
+      managers = await utils.getData('managers');
+      developers = await utils.getData('developers');
       const companyName = DOM.companyNameInput.value;
       const id = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then(res => res.json()).then(data => data);
       const company = await fetch(`http://localhost:8080/companies/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
@@ -54,9 +57,8 @@
             }
             // Удаление проекта в projects и DOM
             DOM.userProjects.removeChild(DOM.userProjects.children[projects.indexOf(project)]);
-            const projectIndex = projects.indexOf(project);
-            await fetch(`http://localhost:8080/projects/${projectIndex}`, { method: "DELETE" });
-
+            await fetch(`http://localhost:8080/projects/${project.id}`, { method: "DELETE" });
+            projects = await utils.getData('projects');
           } else {
             // Если проект не завершён
             if (project.manager !== null) {
@@ -130,7 +132,6 @@
       } else {
         const id = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" }).then(res => res.json()).then(data => data);
         const project = await fetch(`http://localhost:8080/projects/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
-        console.log(project);
         DOM.createNewProject(project.name, project.cost, project.linesOfCode, project.remainsLinesOfCode);
         freeProjects.push(project);
         let manager = null;
@@ -228,17 +229,17 @@
 
         // Увольнение менеджера
         fireButton.addEventListener('click', async () => {
-          const managerIndex = managers.indexOf(manager);
           if (manager.state === 'Free') {
             // Если свободный
-            await fetch(`http://localhost:8080/managers/${managerIndex}`, { method: "DELETE" });
+            await fetch(`http://localhost:8080/managers/${manager.id}`, { method: "DELETE" });
+            managers = await utils.getData('managers');
             freeManagers.splice(managers.indexOf(manager), 1);
             DOM.userManagers.removeChild(div);
           } else
           // Если занятый на проекте
           {
-            await fetch(`http://localhost:8080/managers/${managerIndex}`, { method: "DELETE" });
-
+            await fetch(`http://localhost:8080/managers/${manager.id}`, { method: "DELETE" });
+            managers = await utils.getData('managers');
             // Освобождаем разработчиков, работающих на этом проекте
             for (let developer of manager.developers) {
               developer.state = 'Free';
@@ -312,12 +313,12 @@
 
           // Увольнение разработчика
           fireButton.addEventListener('click', async () => {
-            const developerIndex = developers.indexOf(developer);
             if (developer.state === 'Free') {
               // Если свободный
 
               freeDevelopers.splice(developers.indexOf(developer), 1);
-              await fetch(`http://localhost:8080/developers/${developerIndex}`, { method: "DELETE" });
+              await fetch(`http://localhost:8080/developers/${developer.id}`, { method: "DELETE" });
+              developers = await utils.getData('developers');
               DOM.userDevelopers.removeChild(div);
             } else
             // Если занятый на проекте
@@ -328,7 +329,8 @@
                   project.manager.developers.splice(project.manager.developers.indexOf(developer), 1);
                 }
               }
-              await fetch(`http://localhost:8080/developers/${developerIndex}`, { method: "DELETE" });
+              await fetch(`http://localhost:8080/developers/${developer.id}`, { method: "DELETE" });
+              developers = await utils.getData('developers');
               DOM.userDevelopers.removeChild(div);
             }
           });
@@ -339,17 +341,18 @@
     }
   });
 
-  function stop() {
+  async function stop() {
     clearInterval(intervalID);
     DOM.clearDOM();
     time = 0;
     budget = 0;
-    projects = [];
-    managers = [];
-    developers = [];
     freeDevelopers = [];
     freeManagers = [];
     freeProjects = [];
+    await utils.deleteData('companies');
+    await utils.deleteData('projects');
+    await utils.deleteData('managers');
+    await utils.deleteData('developers');
     isOn = false;
   }
 

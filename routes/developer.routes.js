@@ -25,6 +25,12 @@ class developerRouter {
       res.status(200).end();
     });
 
+    this.__router.delete('/', (req, res) => {
+
+      developerController.deleteAll();
+      res.status(200).end();
+    });
+
     this.__router.post('/', (req, res) => {
       const { name, surname, experience, mode } = req.query;
 

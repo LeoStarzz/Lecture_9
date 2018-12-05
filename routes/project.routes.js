@@ -25,6 +25,12 @@ class projectRouter {
       res.status(200).end();
     });
 
+    this.__router.delete('/', (req, res) => {
+
+      projectController.deleteAll();
+      res.status(200).end();
+    });
+
     this.__router.post('/', (req, res) => {
       const { name, mode } = req.query;
 

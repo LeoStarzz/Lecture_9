@@ -1,4 +1,4 @@
-const { companies } = require('../data/companies.data');
+let { companies } = require('../data/companies.data');
 const { Company } = require('../models/Company');
 
 class companyController {
@@ -25,6 +25,10 @@ class companyController {
   deleteOne(id) {
     const index = companies.findIndex(c => c.id === id);
     companies.splice(index, 1);
+  }
+
+  deleteAll() {
+    companies = [];
   }
 }
 

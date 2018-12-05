@@ -1,4 +1,4 @@
-const { projects } = require('../data/projects.data');
+let { projects } = require('../data/projects.data');
 const { Project } = require('../models/project');
 
 class projectController {
@@ -25,6 +25,10 @@ class projectController {
   deleteOne(id) {
     const index = projects.findIndex(p => p.id === id);
     projects.splice(index, 1);
+  }
+
+  deleteAll() {
+    projects = [];
   }
 }
 
