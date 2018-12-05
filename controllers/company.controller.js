@@ -17,9 +17,10 @@ class companyController {
     return company.id;
   }
 
-  updateOne(id, data) {
-    const index = companies.findIndex(c => c.id === id);
-    companies[index] = data;
+  updateOne(id, name) {
+    const company = this.findOne(id);
+    
+    company.name = name || company.name;
   }
 
   deleteOne(id) {

@@ -17,9 +17,12 @@ class managerController {
     return manager.id;
   }
 
-  updateOne(id, data) {
-    const index = managers.findIndex(c => c.id === id);
-    managers[index] = data;
+  updateOne(id, name, surname, experience) {
+    const manager = this.findOne(id);
+    
+    manager.name = name || manager.name;
+    manager.surname = surname || manager.surname;
+    manager.experience = experience || manager.experience;
   }
 
   deleteOne(id) {

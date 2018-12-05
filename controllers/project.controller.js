@@ -17,9 +17,10 @@ class projectController {
     return project.id;
   }
 
-  updateOne(id, data) {
-    const index = projects.findIndex(c => c.id === id);
-    projects[index] = data;
+  updateOne(id, name) {
+    const project = this.findOne(id);
+
+    project.name = name || project.name;
   }
 
   deleteOne(id) {

@@ -17,9 +17,12 @@ class developerController {
     return developer.id;
   }
 
-  updateOne(id, data) {
-    const index = developers.findIndex(c => c.id === id);
-    developers[index] = data;
+  updateOne(id, name, surname, experience, mode) {
+    const developer = this.findOne(id);
+
+    developer.name = name || developer.name;
+    developer.surname = surname || developer.surname;
+    developer.experience = experience || developer.experience;
   }
 
   deleteOne(id) {
