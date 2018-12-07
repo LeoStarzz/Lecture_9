@@ -14,13 +14,14 @@ class projectController {
     const project = new Project(name, mode);
     
     projects.push(project);
-    return project.id;
+    return project;
   }
 
-  updateOne(id, name) {
+  updateOne(id, {name}) {
     const project = this.findOne(id);
 
     project.name = name || project.name;
+    return project;
   }
 
   deleteOne(id) {

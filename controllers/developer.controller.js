@@ -14,15 +14,16 @@ class developerController {
     const developer = new Developer(name, surname, experience, mode);
 
     developers.push(developer);
-    return developer.id;
+    return developer;
   }
 
-  updateOne(id, name, surname, experience, mode) {
+  updateOne(id, {name, surname, experience}) {
     const developer = this.findOne(id);
 
     developer.name = name || developer.name;
     developer.surname = surname || developer.surname;
     developer.experience = experience || developer.experience;
+    return developer;
   }
 
   deleteOne(id) {

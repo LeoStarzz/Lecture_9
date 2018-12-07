@@ -27,8 +27,7 @@
       managers = await utils.getData('managers');
       developers = await utils.getData('developers');
       const companyName = DOM.companyNameInput.value;
-      const id = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then(res => res.json()).then(data => data);
-      const company = await fetch(`http://localhost:8080/companies/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
+      const company = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then(res => res.json()).then(data => data);
       DOM.userCompanyName.innerHTML = company.name;
       DOM.userSettings.className = "hide";
       intervalID = window.setInterval(mainFunc, tick);
@@ -57,7 +56,7 @@
             }
             // Удаление проекта в projects и DOM
             DOM.userProjects.removeChild(DOM.userProjects.children[projects.indexOf(project)]);
-            await fetch(`http://localhost:8080/projects/${project.id}`, { method: "DELETE" });
+            utils.deleteOne('projects', project.id);
             projects = await utils.getData('projects');
           } else {
             // Если проект не завершён
@@ -130,8 +129,7 @@
       if (utils.isProjectExists(projectName, projects, freeProjects)) {
         error('Project with this name already exists!');
       } else {
-        const id = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" }).then(res => res.json()).then(data => data);
-        const project = await fetch(`http://localhost:8080/projects/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
+        const project = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" }).then(res => res.json()).then(data => data);
         DOM.createNewProject(project.name, project.cost, project.linesOfCode, project.remainsLinesOfCode);
         freeProjects.push(project);
         let manager = null;
@@ -189,9 +187,8 @@
         const managerExperience = DOM.managerExperienceInput.value;
         const fireButton = document.createElement('div');
         const div = document.createElement('div');
-        const id = await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
+        const manager = await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
           { method: "POST" }).then(res => res.json()).then(data => data);
-        const manager = await fetch(`http://localhost:8080/managers/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
         if (freeProjects.length === 0) {
           // Если нет свободных проектов
           manager.state = 'Free';
@@ -231,14 +228,14 @@
         fireButton.addEventListener('click', async () => {
           if (manager.state === 'Free') {
             // Если свободный
-            await fetch(`http://localhost:8080/managers/${manager.id}`, { method: "DELETE" });
+            utils.deleteOne('managers', manager.id);
             managers = await utils.getData('managers');
             freeManagers.splice(managers.indexOf(manager), 1);
             DOM.userManagers.removeChild(div);
           } else
           // Если занятый на проекте
           {
-            await fetch(`http://localhost:8080/managers/${manager.id}`, { method: "DELETE" });
+            utils.deleteOne('managers', manager.id);
             managers = await utils.getData('managers');
             // Освобождаем разработчиков, работающих на этом проекте
             for (let developer of manager.developers) {
@@ -282,9 +279,8 @@
           error("Developer with this name and surname already exists!");
         } else {
           const developerExperience = DOM.developerExperienceInput.value;
-          const id = await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}&mode=${mode}`,
+          const developer = await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}&mode=${mode}`,
             { method: "POST" }).then(res => res.json()).then(data => data);
-          const developer = await fetch(`http://localhost:8080/developers/${id}`, { method: "GET" }).then(res => res.json()).then(data => data);
           let hired = false;
           const fireButton = document.createElement('div');
           const div = document.createElement('div');
@@ -317,7 +313,7 @@
               // Если свободный
 
               freeDevelopers.splice(developers.indexOf(developer), 1);
-              await fetch(`http://localhost:8080/developers/${developer.id}`, { method: "DELETE" });
+              utils.deleteOne('developers', developer.id);
               developers = await utils.getData('developers');
               DOM.userDevelopers.removeChild(div);
             } else
@@ -329,7 +325,7 @@
                   project.manager.developers.splice(project.manager.developers.indexOf(developer), 1);
                 }
               }
-              await fetch(`http://localhost:8080/developers/${developer.id}`, { method: "DELETE" });
+              utils.deleteOne('developers', developer.id);
               developers = await utils.getData('developers');
               DOM.userDevelopers.removeChild(div);
             }
@@ -349,10 +345,10 @@
     freeDevelopers = [];
     freeManagers = [];
     freeProjects = [];
-    await utils.deleteData('companies');
-    await utils.deleteData('projects');
-    await utils.deleteData('managers');
-    await utils.deleteData('developers');
+    await utils.deleteAll('companies');
+    await utils.deleteAll('projects');
+    await utils.deleteAll('managers');
+    await utils.deleteAll('developers');
     isOn = false;
   }
 

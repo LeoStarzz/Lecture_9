@@ -14,13 +14,14 @@ class companyController {
     const company = new Company(name);
 
     companies.push(company);
-    return company.id;
+    return company;
   }
 
-  updateOne(id, name) {
+  updateOne(id, {name}) {
     const company = this.findOne(id);
     
     company.name = name || company.name;
+    return company;
   }
 
   deleteOne(id) {

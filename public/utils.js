@@ -20,8 +20,12 @@ class Utils {
     return fetch(`http://localhost:8080/${data}/`, { method: "GET" }).then(res => res.json()).then(data => data);
   }
 
-  deleteData(data) {
+  deleteAll(data) {
     return fetch(`http://localhost:8080/${data}/`, { method: "DELETE" });
+  }
+
+  deleteOne(type, id) {
+    return fetch(`http://localhost:8080/${type}/${id}/`, { method: "DELETE" });
   }
 }
 

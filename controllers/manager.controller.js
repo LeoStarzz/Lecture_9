@@ -14,15 +14,16 @@ class managerController {
     const manager = new Manager(name, surname, experience);
 
     managers.push(manager);
-    return manager.id;
+    return manager;
   }
 
-  updateOne(id, name, surname, experience) {
+  updateOne(id, {name, surname, experience}) {
     const manager = this.findOne(id);
     
     manager.name = name || manager.name;
     manager.surname = surname || manager.surname;
     manager.experience = experience || manager.experience;
+    return manager;
   }
 
   deleteOne(id) {
