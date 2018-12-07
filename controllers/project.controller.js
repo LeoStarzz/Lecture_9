@@ -3,7 +3,7 @@ const { Project } = require('../models/project');
 
 class projectController {
   findOne(id) {
-    return projects.find(({ id: projId }) => projId === id);
+    return projects.find(({id: pId}) => pId === +id);
   }
 
   findAll() {

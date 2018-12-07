@@ -40,7 +40,7 @@ class companyRouter {
 
     this.__router.put('/:id', (req, res) => {
       const { body, params: { id } } = req;
-
+     
       companyController.updateOne(id, body);
       res.status(200).end();
     });

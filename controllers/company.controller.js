@@ -3,7 +3,7 @@ const { Company } = require('../models/Company');
 
 class companyController {
   findOne(id) {
-    return companies.find(({ id: comId }) => comId === id);
+    return companies.find(({id: cId}) => cId === +id);
   }
 
   findAll() {
@@ -17,9 +17,9 @@ class companyController {
     return company;
   }
 
-  updateOne(id, {name}) {
+  updateOne(id, { name }) {
     const company = this.findOne(id);
-    
+    console.log(company);
     company.name = name || company.name;
     return company;
   }

@@ -1,5 +1,5 @@
 class Utils {
-  constructor() {}
+  constructor() { }
   getRandomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -26,6 +26,15 @@ class Utils {
 
   deleteOne(type, id) {
     return fetch(`http://localhost:8080/${type}/${id}/`, { method: "DELETE" });
+  }
+
+  updateData(type, id, body) {
+    return fetch(`http://localhost:8080/${type}/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json()).then(data => data);
   }
 }
 

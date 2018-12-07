@@ -3,7 +3,7 @@ const { Manager } = require('../models/manager');
 
 class managerController {
   findOne(id) {
-    return managers.find(({ id: manId }) => manId === id);
+    return managers.find(({id: mId}) => mId === +id);
   }
 
   findAll() {
