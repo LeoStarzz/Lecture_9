@@ -33,8 +33,8 @@ class companyRouter {
     this.__router.post('/', (req, res) => {
       const { name } = req.query;
 
-      const id = companyController.create(name);
-      res.json(id);
+      const company = companyController.create(name);
+      res.json(company);
       res.status(201).end();
     });
 

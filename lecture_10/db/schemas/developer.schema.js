@@ -1,10 +1,10 @@
-const {Schema} = require('mongoose');
+const { Schema } = require('mongoose');
 
 exports.DeveloperSchema = new Schema({
-    name: String,
-    surname: String,
-    experiance: Number,
-    lines: Number,
-    state: String,
-    salary: Number
+  name: String,
+  surname: String,
+  experiance: Number,
+  lines: Number,
+  state: String,
+  salary: Number
 });

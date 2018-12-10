@@ -2,27 +2,33 @@ const { DeveloperRepository } = require('../repositories/developer.repository');
 
 class DeveloperController {
   async findOne(id) {
-    return await DeveloperRepository.getOne(id);
+    const developer = await DeveloperRepository.getOne(id);
+    return developer;
   }
 
   async findAll() {
-    return await DeveloperRepository.getAll();
+    const developers = await DeveloperRepository.getAll();
+    return developers;
   }
 
   async create(developer) {
-    return await DeveloperRepository.createOne(developer);
+    const newDeveloper = await DeveloperRepository.createOne(developer);
+    return newDeveloper;
   }
 
-  async updateOne(id, { name }) {
-
+  async updateOne(id, developer) {
+    const newDeveloper = await DeveloperRepository.updateOne(id, developer);
+    return newDeveloper;
   }
 
   async deleteOne(id) {
-    return await DeveloperRepository.deleteOne(id);
+    const developer = await DeveloperRepository.deleteOne(id);
+    return developer;
   }
 
   async deleteAll() {
-
+    const developers = await DeveloperRepository.deleteAll();
+    return developers;
   }
 }
 

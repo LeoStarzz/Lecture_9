@@ -35,8 +35,8 @@ class managerRouter {
     this.__router.post('/', (req, res) => {
       const { name, surname, experience } = req.query;
 
-      const id = managerController.create(name, surname, experience);
-      res.json(id);
+      const manager = managerController.create(name, surname, experience);
+      res.json(manager);
       res.status(201).end();
     });
 

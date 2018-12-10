@@ -27,7 +27,13 @@
       managers = await utils.getData('managers');
       developers = await utils.getData('developers');
       const companyName = DOM.companyNameInput.value;
-      const company = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then(res => res.json()).then(data => data);
+
+      const company = await fetch(`http://localhost:8080/companies/`, {
+        method: "POST",
+        body: JSON.stringify({ name: `${companyName}` }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.json()).then(data => data);
       DOM.userCompanyName.innerHTML = company.name;
       DOM.userSettings.className = "hide";
       intervalID = window.setInterval(mainFunc, tick);
@@ -63,7 +69,7 @@
             if (project.manager !== null) {
               // Если есть менеждер считаем строки кода
               for (let developer of project.manager.developers) {
-                totalLines = totalLines + developer.lines;
+                totalLines = totalLines + +developer.lines;
               }
 
               totalLines = totalLines * project.manager.quotient;
@@ -72,8 +78,9 @@
             if (project.remainsLinesOfCode - totalLines < 0) {
               project.remainsLinesOfCode = 0;
             } else {
+              console.log(totalLines);
               project.remainsLinesOfCode = Math.round(project.remainsLinesOfCode - totalLines);
-            }
+           }
             DOM.userProjects.children[projects.indexOf(project)].children[0].innerHTML = `Lines left: ${project.remainsLinesOfCode}`;
             totalLines = 0;
           }
@@ -129,7 +136,14 @@
       if (utils.isProjectExists(projectName, projects, freeProjects)) {
         error('Project with this name already exists!');
       } else {
-        const project = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" }).then(res => res.json()).then(data => data);
+        const lines = utils.getLinesOfCode(mode);
+        const project = await fetch(`http://localhost:8080/projects/`, {
+          method: "POST",
+          body: JSON.stringify({ name: `${projectName}`, cost: `${utils.getCost(mode)}`, linesOfCode: `${lines}`, manager: `${{}}`, remainsLinesOfCode: `${lines}` }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then(res => res.json()).then(data => data);
+        console.log(project);
         DOM.createNewProject(project.name, project.cost, project.linesOfCode, project.remainsLinesOfCode);
         freeProjects.push(project);
         let manager = null;
@@ -187,8 +201,13 @@
         const managerExperience = DOM.managerExperienceInput.value;
         const fireButton = document.createElement('div');
         const div = document.createElement('div');
-        const manager = await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
-          { method: "POST" }).then(res => res.json()).then(data => data);
+        const manager = await fetch(`http://localhost:8080/managers/`, {
+          method: "POST",
+          body: JSON.stringify({ name: `${managerName}`, surname: `${managerSurname}`, experience: `${managerExperience}`, salary: `${utils.getManagerSalary(managerExperience)}`, state: null, developers: `${[]}`, quotient: `${utils.getQuotient(managerExperience)}` }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then(res => res.json()).then(data => data);
+      console.log(manager);
         if (freeProjects.length === 0) {
           // Если нет свободных проектов
           manager.state = 'Free';
@@ -279,8 +298,12 @@
           error("Developer with this name and surname already exists!");
         } else {
           const developerExperience = DOM.developerExperienceInput.value;
-          const developer = await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}&mode=${mode}`,
-            { method: "POST" }).then(res => res.json()).then(data => data);
+          const developer = await fetch(`http://localhost:8080/developers/`, {
+            method: "POST",
+            body: JSON.stringify({ name: `${developerName}`, surname: `${developerSurname}`, experience: `${developerExperience}`, lines: `${utils.getDeveloperLines(mode, developerExperience)}`, state: null, salary: `${utils.getDeveloperSalary(developerExperience)}` }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+            .then(res => res.json()).then(data => data);
           let hired = false;
           const fireButton = document.createElement('div');
           const div = document.createElement('div');

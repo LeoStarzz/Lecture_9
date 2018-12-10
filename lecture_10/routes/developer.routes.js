@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { developerController } = require('../controllers/developer.controller');
+const { DeveloperController } = require('../controllers/developer.controller');
 
 class developerRouter {
   constructor() {
@@ -15,39 +15,38 @@ class developerRouter {
     this.__router.get('/:id', async (req, res) => {
       const { id } = req.params;
 
-      res.json(await developerController.findOne(+id));
+      res.json(await DeveloperController.findOne(+id));
     });
 
     this.__router.delete('/:id', async (req, res) => {
       const { id } = req.params;
 
-      await developerController.deleteOne(+id);
+      await DeveloperController.deleteOne(+id);
       res.status(200).end();
     });
 
     this.__router.delete('/', async (req, res) => {
 
-      await developerController.deleteAll();
+      await DeveloperController.deleteAll();
       res.status(200).end();
     });
 
     this.__router.post('/', async (req, res) => {
-      const { name, surname, experience, mode } = req.query;
-
-      const id = await developerController.create(name, surname, experience, mode);
-      res.json(id);
+      const developer = await DeveloperController.create(req.body);
+      
+      res.json(developer);
       res.status(201).end();
     });
 
     this.__router.put('/:id', async (req, res) => {
       const { body, params: { id } } = req;
 
-      await developerController.updateOne(id, body);
+      await DeveloperController.updateOne(id, body);
       res.status(200).end();
     });
 
     this.__router.get('/', async (req, res) => {
-      res.json(await developerController.findAll());
+      res.json(await DeveloperController.findAll());
     });
   }
 }

@@ -2,19 +2,34 @@ const { CompanyModel } = require('../db/models/company.model');
 
 class CompanyRepository {
   async getOne(id) {
-    return await CompanyModel.findOne(id);
+    const company = await CompanyModel.findbyId(id);
+    return company;
   }
 
   async getAll() {
-    return await CompanyModel.find();
+    const companies = await CompanyModel.find();
+    return companies;
   }
 
   async createOne(company) {
-    return await CompanyModel.create(company);
+    const newCompany = await new CompanyModel(company).save();
+    console.log(newCompany);
+    return newCompany;
   }
 
-  async deleteOne(_id) {
-    return await CompanyModel.deleteOne({ _id });
+  async deleteOne(id) {
+    const company = await CompanyModel.findByIdAndRemove(id);
+    return company;
+  }
+
+  async updateOne(id, company) {
+    const newCompany = await CompanyModel.findByIdAndUpdate(id, company, { new: true });
+    return newCompany;
+  }
+
+  async deleteAll() {
+    const companies = await CompanyModel.deleteMany();
+    return companies;
   }
 }
 

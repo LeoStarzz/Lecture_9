@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { companyController } = require('../controllers/company.controller');
+const { CompanyController } = require('../controllers/company.controller');
 
 class companyRouter {
   constructor() {
@@ -15,38 +15,37 @@ class companyRouter {
     this.__router.get('/:id', async (req, res) => {
       const { id } = req.params;
 
-      res.json(await companyController.findOne(+id));
+      res.json(await CompanyController.findOne(+id));
     });
 
     this.__router.delete('/:id', async (req, res) => {
       const { id } = req.params;
 
-      await companyController.deleteOne(+id);
+      await CompanyController.deleteOne(+id);
       res.status(200).end();
     });
 
     this.__router.delete('/', async (req, res) => {
-      await companyController.deleteAll();
+      await CompanyController.deleteAll();
       res.status(200).end();
     });
 
     this.__router.post('/', async (req, res) => {
-      const { name } = req.query;
-
-      const id = await companyController.create(name);
-      res.json(id);
+      const company = await CompanyController.create(req.body);
+     
+      res.json(company);
       res.status(201).end();
     });
 
     this.__router.put('/:id', async (req, res) => {
       const { body, params: { id } } = req;
      
-      await companyController.updateOne(id, body);
+      await CompanyController.updateOne(id, body);
       res.status(200).end();
     });
 
     this.__router.get('/', async (req, res) => {
-      res.json(await companyController.findAll());
+      res.json(await CompanyController.findAll());
     });
   }
 }

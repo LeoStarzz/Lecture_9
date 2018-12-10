@@ -2,19 +2,33 @@ const { DeveloperModel } = require('../db/models/developer.model');
 
 class DeveloperRepository {
   async getOne(id) {
-    return await DeveloperModel.findOne(id);
+    const developer = await DeveloperModel.findbyId(id);
+    return developer;
   }
 
   async getAll() {
-    return await DeveloperModel.find();
+    const developers = await DeveloperModel.find();
+    return developers;
   }
 
-  async createOne(company) {
-    return await DeveloperModel.create(company);
+  async createOne(developer) {
+    const newDeveloper = await new DeveloperModel(developer).save();
+    return newDeveloper;
   }
 
-  async deleteOne(_id) {
-    return await DeveloperModel.deleteOne({ _id });
+  async deleteOne(id) {
+    const developer = await DeveloperModel.findByIdAndRemove(id);
+    return developer;
+  }
+
+  async updateOne(id, developer) {
+    const newDeveloper = await DeveloperModel.findByIdAndUpdate(id, developer, { new: true });
+    return newDeveloper;
+  }
+
+  async deleteAll() {
+    const developers = await DeveloperModel.deleteMany();
+    return developers;
   }
 }
 

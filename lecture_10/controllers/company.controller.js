@@ -1,29 +1,35 @@
 const { CompanyRepository } = require('../repositories/company.repository');
 
-class companyController {
+class CompanyController {
   async findOne(id) {
-    return await CompanyRepository.getOne(id);
+    const company = await CompanyRepository.getOne(id);
+    return company;
   }
 
   async findAll() {
-    return await CompanyRepository.getAll();
+    const companies = await CompanyRepository.getAll();
+    return companies;
   }
 
   async create(company) {
-    return await CompanyRepository.createOne(company);
+    const newCompany = await CompanyRepository.createOne(company);
+    return newCompany;
   }
 
-  async updateOne(id, { name }) {
-
+  async updateOne(id, company) {
+    const newCompany = await CompanyRepository.updateOne(id, company);
+    return newCompany;
   }
 
   async deleteOne(id) {
-    return await CompanyRepository.deleteOne(id);
+    const company = await CompanyRepository.deleteOne(id);
+    return company;
   }
 
   async deleteAll() {
-
+    const companies = await CompanyRepository.deleteAll();
+    return companies;
   }
 }
 
-exports.companyController = new companyController();
+exports.CompanyController = new CompanyController();

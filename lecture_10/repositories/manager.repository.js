@@ -2,19 +2,33 @@ const { ManagerModel } = require('../db/models/manager.model');
 
 class ManagerRepository {
   async getOne(id) {
-    return await ManagerModel.findOne(id);
+    const manager = await ManagerModel.findbyId(id);
+    return manager;
   }
 
   async getAll() {
-    return await ManagerModel.find();
+    const managers = await ManagerModel.find();
+    return managers;
   }
 
   async createOne(manager) {
-    return await ManagerModel.create(manager);
+    const newManager = await new ManagerModel(manager).save();
+    return newManager;
   }
 
-  async deleteOne(_id) {
-    return await ManagerModel.deleteOne({ _id });
+  async deleteOne(id) {
+    const manager = await ManagerModel.findByIdAndRemove(id);
+    return manager;
+  }
+
+  async updateOne(id, manager) {
+    const newManager = await ManagerModel.findByIdAndUpdate(id, manager, { new: true });
+    return newManager;
+  }
+
+  async deleteAll() {
+    const managers = await ManagerModel.deleteMany();
+    return managers;
   }
 }
 
