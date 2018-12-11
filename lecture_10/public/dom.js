@@ -41,7 +41,8 @@ class Dom {
 		this.easyButton.classList.remove('button-active');
 		this.mediumButton.classList.remove('button-active');
 		this.hardButton.classList.remove('button-active');
-		this.userSettings.className = "show";
+    this.userSettings.className = "show";
+    this.userStatistics.innerHTML = "";
 
 		while (this.userProjects.firstChild) {
 			this.userProjects.removeChild(this.userProjects.firstChild);

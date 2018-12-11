@@ -15,13 +15,13 @@ class developerRouter {
     this.__router.get('/:id', async (req, res) => {
       const { id } = req.params;
 
-      res.json(await DeveloperController.findOne(+id));
+      res.json(await DeveloperController.findOne(id));
     });
 
     this.__router.delete('/:id', async (req, res) => {
       const { id } = req.params;
 
-      await DeveloperController.deleteOne(+id);
+      await DeveloperController.deleteOne(id);
       res.status(200).end();
     });
 

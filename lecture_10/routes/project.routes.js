@@ -15,13 +15,13 @@ class projectRouter {
     this.__router.get('/:id', async (req, res) => {
       const { id } = req.params;
 
-      res.json(await ProjectController.findOne(+id));
+      res.json(await ProjectController.findOne(id));
     });
 
     this.__router.delete('/:id', async (req, res) => {
       const { id } = req.params;
 
-      await ProjectController.deleteOne(+id);
+      await ProjectController.deleteOne(id);
       res.status(200).end();
     });
 

@@ -15,13 +15,13 @@ class companyRouter {
     this.__router.get('/:id', async (req, res) => {
       const { id } = req.params;
 
-      res.json(await CompanyController.findOne(+id));
+      res.json(await CompanyController.findOne(id));
     });
 
     this.__router.delete('/:id', async (req, res) => {
       const { id } = req.params;
 
-      await CompanyController.deleteOne(+id);
+      await CompanyController.deleteOne(id);
       res.status(200).end();
     });
 

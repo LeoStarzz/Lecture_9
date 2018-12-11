@@ -109,13 +109,13 @@ class Utils {
         alert('Опыт должен быть больше 0 лет');
       }
       else if (experience < 2) {
-        return  this.getRandomInRange(400, 600);
+        return this.getRandomInRange(400, 600);
       }
       else if (experience < 5) {
-        return  this.getRandomInRange(700, 900);
+        return this.getRandomInRange(700, 900);
       }
       else {
-        return  this.getRandomInRange(1000, 1400);
+        return this.getRandomInRange(1000, 1400);
       }
     }
     else if (mode === 'medium') {
@@ -123,13 +123,13 @@ class Utils {
         alert('Опыт должен быть больше 0 лет');
       }
       else if (experience < 2) {
-        return  this.getRandomInRange(300, 500);
+        return this.getRandomInRange(300, 500);
       }
       else if (experience < 5) {
-        return  this.getRandomInRange(600, 800);
+        return this.getRandomInRange(600, 800);
       }
       else {
-        return  this.getRandomInRange(800, 1200);
+        return this.getRandomInRange(800, 1200);
       }
     }
     else if (mode === 'hard') {
@@ -137,13 +137,13 @@ class Utils {
         alert('Опыт должен быть больше 0 лет');
       }
       else if (experience < 2) {
-        return  this.getRandomInRange(200, 400);
-        }
+        return this.getRandomInRange(200, 400);
+      }
       else if (experience < 5) {
-        return  this.getRandomInRange(500, 700);
-        }
+        return this.getRandomInRange(500, 700);
+      }
       else {
-        return  this.getRandomInRange(800, 1000);
+        return this.getRandomInRange(800, 1000);
       }
     }
   }
