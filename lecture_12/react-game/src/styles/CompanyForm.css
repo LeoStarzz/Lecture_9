@@ -1,0 +1,18 @@
+.main-header {
+	text-align: center;
+	font-size: 20px;
+  letter-spacing: 0.5ch;
+  margin-top: 10px;
+}
+
+.header {
+	text-align: center;
+}
+
+.company-name-form {
+	margin-bottom: 15px;
+}
+
+.company-name-input {
+	width: 20%;
+}

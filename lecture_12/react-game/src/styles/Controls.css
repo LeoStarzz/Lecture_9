@@ -1,0 +1,26 @@
+.start {
+	display: inline-block;
+	width: 60px;
+	height: 32px;
+	background-color: #4729ee;
+	color: #ffffff;
+	text-align: center;
+	line-height: 32px;
+	cursor: pointer;
+	margin-top: 16px;
+	margin-bottom: 24px;
+}
+
+.stop {
+	display: inline-block;
+	width: 60px;
+	height: 32px;
+	background-color: red;
+	color: #ffffff;
+	text-align: center;
+	line-height: 32px;
+	cursor: pointer;
+	margin-top: 16px;
+	margin-bottom: 24px;
+	margin-right: 32px;
+}

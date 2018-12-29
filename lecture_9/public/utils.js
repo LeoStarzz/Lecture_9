@@ -17,20 +17,20 @@ class Utils {
   }
 
   getData(data) {
-    return fetch(`http://localhost:8080/${data}/`, { method: "GET" }).then(res => res.json()).then(data => data);
+    return fetch(`http://localhost:8080/${data}/`, { method: 'GET' }).then(res => res.json()).then(data => data);
   }
 
   deleteAll(data) {
-    return fetch(`http://localhost:8080/${data}/`, { method: "DELETE" });
+    return fetch(`http://localhost:8080/${data}/`, { method: 'DELETE' });
   }
 
   deleteOne(type, id) {
-    return fetch(`http://localhost:8080/${type}/${id}/`, { method: "DELETE" });
+    return fetch(`http://localhost:8080/${type}/${id}/`, { method: 'DELETE' });
   }
 
   updateData(type, id, body) {
     return fetch(`http://localhost:8080/${type}/${id}`, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' }
     })

@@ -1,0 +1,49 @@
+.mode-text {
+  margin-right: 10px;
+}
+
+.button-active {
+	border: 2px solid black;
+}
+
+.easy {
+	display: inline-block;
+	width: 50px;
+	height: 35px;
+	background-color: greenyellow;
+	text-align: center;
+	line-height: 35px;
+	cursor: pointer;
+}
+
+.easy:hover {
+	opacity: 0.8;
+}
+
+.medium {
+	display: inline-block;
+	width: 70px;
+	height: 35px;
+	background-color: yellow;
+	text-align: center;
+	line-height: 35px;
+	cursor: pointer;
+}
+
+.medium:hover {
+	opacity: 0.8;
+}
+
+.hard {
+	display: inline-block;
+	width: 50px;
+	height: 35px;
+	background-color: red;
+	text-align: center;
+	line-height: 35px;
+	cursor: pointer;
+}
+
+.hard:hover {
+	opacity: 0.8;
+}

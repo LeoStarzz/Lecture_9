@@ -1,0 +1,21 @@
+.time-text {
+	display: inline-block;
+}
+
+.time {
+	display: inline-block;
+}
+
+.budget-text {
+	display: inline-block;
+}
+
+.budget {
+	display: inline-block;
+}
+
+.error {
+	margin-left: 40px;
+	display: inline-block;
+	color: red;
+}

@@ -19,7 +19,6 @@ class companyController {
 
   updateOne(id, { name }) {
     const company = this.findOne(id);
-    console.log(company);
     company.name = name || company.name;
     return company;
   }

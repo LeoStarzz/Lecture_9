@@ -21,7 +21,8 @@ class projectRouter {
     this.__router.delete('/:id', async (req, res) => {
       const { id } = req.params;
 
-      await ProjectController.deleteOne(id);
+      const project = await ProjectController.deleteOne(id);
+      res.json(project);
       res.status(200).end();
     });
 

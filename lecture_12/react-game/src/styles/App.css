@@ -1,0 +1,86 @@
+html, body {
+  font-size: 18px;
+  font-family: 'Arial', sans-serif;
+}
+
+.add {
+  width: 90px;
+  height: 50px;
+  background-color: green;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  display: table-cell;
+  vertical-align: middle;
+  margin-top: 10px;
+}
+
+.fire {
+  display: inline-block;
+  width: 60px;
+  height: 32px;
+  background-color: red;
+  color: #ffffff;
+  text-align: center;
+  line-height: 32px;
+  cursor: pointer;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
+
+.input {
+  width: 80%;
+  display: inline-block;
+  height: 15px;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.game-container {
+  display: flex;
+}
+
+.user-data {
+  width: 30%;
+}
+
+.projects {
+  width: 30%;
+  margin-right: 15px;
+}
+
+.managers {
+  width: 30%;
+  margin-right: 15px;
+}
+
+.developers {
+  width: 30%;
+}
+
+.project-container {
+  width: 100%;
+}
+
+.manager-container {
+  width: 100%;
+}
+
+.developer-container {
+  width: 100%;
+}

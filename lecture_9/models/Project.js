@@ -1,4 +1,4 @@
-const u = require("../Utils");
+const u = require('../Utils');
 const utils = new u.Utils();
 let id = 0;
 
@@ -10,7 +10,7 @@ class Project {
     this.linesOfCode = this.getLinesOfCode(mode);
     this.manager;
     this.remainsLinesOfCode = this.linesOfCode;
-    id++;
+    id += 1;
   }
   getCost(mode) {
     if (mode === 'easy') {

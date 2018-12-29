@@ -1,4 +1,4 @@
-const u = require("../Utils");
+const u = require('../Utils');
 const utils = new u.Utils();
 let id = 0;
 
@@ -11,7 +11,7 @@ class Developer {
     this.lines = this.getLines(mode);
     this.state;
     this.salary = this.getSalary();
-    id++;
+    id += 1;
   }
   getSalary() {
     if (this.experience < 2) {

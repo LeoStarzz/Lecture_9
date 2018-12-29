@@ -4,7 +4,7 @@ class Company {
   constructor(name) {
     this.id = id;
     this.name = name;
-    id++;
+    id += 1;
   }
 }
 

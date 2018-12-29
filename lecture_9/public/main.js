@@ -27,9 +27,9 @@
       managers = await utils.getData('managers');
       developers = await utils.getData('developers');
       const companyName = DOM.companyNameInput.value;
-      const company = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: "POST" }).then(res => res.json()).then(data => data);
+      const company = await fetch(`http://localhost:8080/companies/?name=${companyName}`, { method: 'POST' }).then(res => res.json()).then(data => data);
       DOM.userCompanyName.innerHTML = company.name;
-      DOM.userSettings.className = "hide";
+      DOM.userSettings.className = 'hide';
       intervalID = window.setInterval(mainFunc, tick);
 
       async function mainFunc() {
@@ -88,7 +88,7 @@
 
         if (budget <= 0) {
           stop();
-          alert("You lose :(");
+          alert('You lose :(');
         }
       }
     }
@@ -129,7 +129,7 @@
       if (utils.isProjectExists(projectName, projects, freeProjects)) {
         error('Project with this name already exists!');
       } else {
-        const project = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: "POST" }).then(res => res.json()).then(data => data);
+        const project = await fetch(`http://localhost:8080/projects/?name=${projectName}&mode=${mode}`, { method: 'POST' }).then(res => res.json()).then(data => data);
         DOM.createNewProject(project.name, project.cost, project.linesOfCode, project.remainsLinesOfCode);
         freeProjects.push(project);
         let manager = null;
@@ -154,7 +154,7 @@
             if (count < 5) {
               if (developer.children[0].innerHTML === 'Project: Free') {
                 developer.children[0].innerHTML = `Project: ${freeProjects[0].name}`;
-                count++;
+                count += 1;
               }
             }
           }
@@ -182,13 +182,13 @@
       const managerName = DOM.managerNameInput.value;
       const managerSurname = DOM.managerSurnameInput.value;
       if (utils.isManagerExists(managerName, managerSurname, managers)) {
-        error("Manager with this name and surname already exists!");
+        error('Manager with this name and surname already exists!');
       } else {
         const managerExperience = DOM.managerExperienceInput.value;
         const fireButton = document.createElement('div');
         const div = document.createElement('div');
         const manager = await fetch(`http://localhost:8080/managers/?name=${managerName}&surname=${managerSurname}&experience=${managerExperience}`,
-          { method: "POST" }).then(res => res.json()).then(data => data);
+          { method: 'POST' }).then(res => res.json()).then(data => data);
         if (freeProjects.length === 0) {
           // Если нет свободных проектов
           manager.state = 'Free';
@@ -215,7 +215,7 @@
             if (count < 5) {
               if (developer.children[0].innerHTML === 'Project: Free') {
                 developer.children[0].innerHTML = `Project: ${freeProjects[0].name}`;
-                count++;
+                count += 1;
               }
             }
           }
@@ -276,11 +276,11 @@
         const developerName = DOM.developerNameInput.value;
         const developerSurname = DOM.developerSurnameInput.value;
         if (utils.isDeveloperExists(developerName, developerSurname, developers)) {
-          error("Developer with this name and surname already exists!");
+          error('Developer with this name and surname already exists!');
         } else {
           const developerExperience = DOM.developerExperienceInput.value;
           const developer = await fetch(`http://localhost:8080/developers/?name=${developerName}&surname=${developerSurname}&experience=${developerExperience}&mode=${mode}`,
-            { method: "POST" }).then(res => res.json()).then(data => data);
+            { method: 'POST' }).then(res => res.json()).then(data => data);
           let hired = false;
           const fireButton = document.createElement('div');
           const div = document.createElement('div');

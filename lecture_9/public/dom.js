@@ -41,7 +41,7 @@ class Dom {
 		this.easyButton.classList.remove('button-active');
 		this.mediumButton.classList.remove('button-active');
 		this.hardButton.classList.remove('button-active');
-		this.userSettings.className = "show";
+		this.userSettings.className = 'show';
 
 		while (this.userProjects.firstChild) {
 			this.userProjects.removeChild(this.userProjects.firstChild);
@@ -62,7 +62,7 @@ class Dom {
 		div.appendChild(document.createTextNode('Experience:' + ' ' + experience + ', '));
 		div.appendChild(document.createTextNode('Lines:' + ' ' + lines + ', '));
 		const p = document.createElement('p');
-		p.className = "inline";
+		p.className = 'inline';
 		p.appendChild(document.createTextNode('Project:' + ' ' + state));
 		div.appendChild(p);
 		div.appendChild(fireButton);
@@ -78,7 +78,7 @@ class Dom {
 		div.appendChild(document.createTextNode('Quotient:' + ' ' + quotient + ', '));
 		const p = document.createElement('p');
 		p.appendChild(document.createTextNode('Project:' + ' ' + state));
-		p.className = "inline";
+		p.className = 'inline';
 		div.appendChild(p);
 		div.appendChild(fireButton);
 		this.userManagers.appendChild(div);

@@ -10,7 +10,7 @@ class Manager {
     this.state;
     this.developers = [];
     this.quotient = this.getQuotient();
-    id++;
+    id += 1;
   }
   getSalary() {
     if (this.experience < 0) {
